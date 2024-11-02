@@ -1,3 +1,37 @@
+:root {
+    --main-bg: #384B70;
+    --main-prim: #507687;
+    --main-highlight: #FCFAEE;
+    --main-red: #B8001F;
+
+    /* transparent */
+    --bg80: hsla(220, 33%, 33%, 0.80);
+    --bg50: hsla(220, 33%, 33%, 0.50);
+    --bg30: hsla(220, 33%, 33%, 0.30);
+    --bg10: hsla(220, 33%, 33%, 0.10);
+    --prim80: hsla(199, 26%, 42%, 0.80);
+    --prim50: hsla(199, 26%, 42%, 0.50);
+    --prim30: hsla(199, 26%, 42%, 0.30);
+    --prim10: hsla(199, 26%, 42%, 0.10);
+    --highlight80: hsla(51, 70%, 96%, 0.80);
+    --highlight50: hsla(51, 70%, 96%, 0.50);
+    --highlight30: hsla(51, 70%, 96%, 0.30);
+    --highlight10: hsla(51, 70%, 96%, 0.10);
+    --red80: hsla(350, 100%, 36%, 0.80);
+    --red50: hsla(350, 100%, 36%, 0.50);
+    --red30: hsla(350, 100%, 36%, 0.30);
+    --red10: hsla(350, 100%, 36%, 0.10);
+}
+
+
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -11,7 +45,7 @@ h1 {
 nav {
     background-color: #333;
     color: white;
-    padding: 10px;
+    padding: 20px;
 }
 
 nav ul {
@@ -39,17 +73,28 @@ nav ul li a {
 }
 
 .tableConfig {
-    margin-bottom: 20px;
+    display: flex;
+    margin-block: clamp(10px, 2vw, 20px);
+    gap: 40px;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
+
+
 .tableConfig button {
-    margin-right: 10px;
+    border: none;
+    padding-inline: clamp(10px, 5vw, 40px);
+    padding-block: clamp(5px, 5vw, 10px);
+    border-radius: 3px
+
 }
 
 .table-container {
-    width: calc(100% - 40px); /* Full width minus margin */
-    margin: 0 auto; /* Center the table container */
-    overflow-x: auto; /* Enable horizontal scrolling */
+    width: calc(100% - 40px);
+    margin: 0 auto; 
+    overflow-x: auto; 
 }
 
 table {
@@ -58,34 +103,74 @@ table {
     font-size: 14px; /* Adjust font size for better readability */
 }
 
+.tableContainer {
+    overflow-y: auto;
+    margin-inline: 20px;
+}
+
 table, th, td {
     border: 1px solid #ddd;
 }
 
 th, td {
-    padding: 4px; /* Reduce padding for a more compact look */
     text-align: left;
 }
 
 th {
+    font-size: 15px;
     background-color: #f2f2f2;
+    padding-block: 8px;
+    padding-left: 5px;
+    text-align: center;
+    letter-spacing: clamp(1px, 5vw, 3px);
 }
 
-/* Style for smaller screens */
-@media (max-width: 600px) {
-    table, th, td {
-        font-size: 12px; /* Reduce font size on smaller screens */
-    }
-    th, td {
-        padding: 2px; /* Further reduce padding on smaller screens */
-    }
+td {
+    min-width: 80px;
+    font-size: 12px;
+    padding-top: 4px;
 }
+
 
 .search-bar {
     margin-bottom: 10px;
+    text-align: center;
 }
 
 div#headerInputs {
     display: flex;
     flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =======  Media Query ========== */
+/* Style for smaller screens */
+@media (max-width: 600px) {
+    table, th, td {
+        font-size: 12px; 
+    }
+    th, td {
+        padding: 2px;
+    }
 }

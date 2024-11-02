@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Management - Dorothy's Database</title>
+    <title>Dorothy's Database</title>
     <link rel="stylesheet" href="./../css/styles.css">
+    <link rel="stylesheet" href="./../css/home.css">
+    <link rel="stylesheet" href="./../css/dataMgmt.css">
 </head>
 <body>
-    <h1>Data Management</h1>
-
     <nav>
         <ul>
             <li><a href="../../index.html">Home</a></li>
@@ -17,18 +17,20 @@
         </ul>
     </nav>
 
-    <div class="search-bar">
-        <input type="text" placeholder="Search..." id="data-management-search">
+    <div class="search-bar dataMgmtInput">
+        <input type="text" class="home-search" placeholder="Search..." id="data-management-search">
     </div>
     <div class="tableConfig">
         <button id="insertButton">Insert</button>
         <button>Update</button>
         <button>Delete</button>
     </div>
-    <table id="data-management-table">
-        <thead id="headersRow"></thead>
-        <tbody id="subheadersRow"></tbody>
-    </table>
+    <div class="tableContainer">
+        <table id="data-management-table">
+            <thead id="headersRow"></thead>
+            <tbody id="subheadersRow"></tbody>
+        </table>
+    </div>
 
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <!-- <script src="./js/dataManagement.js"></script> -->

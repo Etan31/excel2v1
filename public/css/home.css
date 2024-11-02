@@ -1,0 +1,6 @@
+
+input.home-search {
+    padding: 5px 20px;
+    border: 1px solid var(--main-bg);
+    border-radius: 3px;
+}

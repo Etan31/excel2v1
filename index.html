@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dorothy's Database</title>
     <link rel="stylesheet" href="./public/css/styles.css">
+    <link rel="stylesheet" href="./public/css/home.css">
 </head>
 <body>
-    <h1>Dorothy's Database</h1>
-
     <nav>
         <ul>
             <li><a href="./index.html">Home</a></li>
@@ -18,15 +17,16 @@
     </nav>
 
     <div id="home" class="section active">
-        <h2>Home</h2>
         <div class="search-bar">
-            <input type="text" placeholder="Search..." id="home-search">
+            <input type="text" class="home-search" placeholder="Search..." id="home-search">
         </div>
 
-        <table id="headersTable">
-            <thead id="headersRow"></thead>
-            <tbody id="subheadersRow"></tbody>
-        </table>
+        <div class="tableContainer">
+            <table id="headersTable">
+                <thead id="headersRow"></thead>
+                <tbody id="subheadersRow"></tbody>
+            </table>
+        </div>
     </div>
     
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>

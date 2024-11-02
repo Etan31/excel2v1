@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Column Management - Dorothy's Database</title>
+    <title>Dorothy's Database</title>
     <link rel="stylesheet" href="./../css/styles.css">
+    <link rel="stylesheet" href="./../css/columnMgmt.css">
+    
 </head>
 <body>
-    <h1>Column Management</h1>
-    
     <nav>
         <ul>
             <li><a href="../../index.html">Home</a></li>
@@ -24,15 +24,19 @@
     </div>
 
     <!-- Modal Popup for adding column headers and sub-headers -->
-    <div id="columnModal" class="modal" style="display: none;">
+    <div id="columnModal" class="modal columnModal" style="display: none;">
         <div class="modal-content">
-            <h2>Add Column</h2>
-            <div id="headerInputs">
-                <label>Header:
+            <div class="heading">
+                <h2>Add Column</h2>
+                <div class="closeBtn"><button>X</button></div>
+            </div>
+            <div id="headerInputs" class="headerInputs">
+                <label>Header:  
                     <input type="text" placeholder="Enter header name" class="header-input" data-heading="h1-1">
                 </label>
             </div>
             <div class="modal-buttons">
+                <button id="addimageBtn">Add Image</button>
                 <button id="addSubHeaderBtn">Add Subheading</button>
                 <button id="addAnotherHeaderBtn">Add Another Header</button>
                 <button id="saveColumnBtn">Save</button>
@@ -40,17 +44,25 @@
         </div>
     </div>
 
-    <table id="column-management-table">
-        <thead id="columnHeadersRow"></thead>
-        <tbody id="columnSubheadersRow"></tbody>
-    </table>
+    <!-- Table to show the store data from the database -->
+    <div class="tableContainer">
+        <table id="column-management-table">
+            <thead id="columnHeadersRow">
+                <!-- TODO: Add a column of row number -->
+            </thead>
+            <tbody id="columnSubheadersRow">
+                <!-- TODO: Add a column of row number that is sticky to the left side -->
+            </tbody>
+        </table>
+    </div>
 
     <!-- <script src="../js/columnManagement.js"></script> -->
     <script src="./../js/headerFetcher.js"></script>
+    <script src="./../js/columnManagement.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            fetchHeaders('headersRow', 'subheadersRow'); // For Data Management Table
-            fetchHeaders('columnHeadersRow', 'columnSubheadersRow'); // For Column Management Table
+            fetchHeaders('headersRow', 'subheadersRow'); 
+            fetchHeaders('columnHeadersRow', 'columnSubheadersRow'); 
         });
     </script>
 </body>

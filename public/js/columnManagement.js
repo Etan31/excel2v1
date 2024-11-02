@@ -120,7 +120,6 @@
 
 // //======================= This code above save the table into local storage only. ===============// //
 
-
 document.addEventListener("DOMContentLoaded", () => {
     const elements = ["addColumnBtn", "columnModal", "saveColumnBtn", "addAnotherHeaderBtn", "addSubHeaderBtn", "headerInputs"]
         .reduce((acc, id) => {
@@ -141,11 +140,16 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Add header or subheader input field
-    const addInput = (placeholder, onInput) => {
+    const addInput = (placeholder, onInput, isSubHeader = false) => {
         const input = document.createElement("input");
         input.type = "text";
         input.placeholder = placeholder;
         input.classList.add("header-input");
+
+        if (isSubHeader) {
+            input.classList.add("subheader-input");
+        }
+
         input.addEventListener("input", onInput);
         elements["headerInputs"].appendChild(input);
     };
@@ -154,6 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
         currentHeadingIndex = headings.length;
         const h1Header = { h1: "", subHeaders: [] };
         headings.push(h1Header);
+        
+        // Add header input
         addInput(`Enter header ${currentHeadingIndex + 1}`, (e) => h1Header.h1 = e.target.value);
     };
 
@@ -162,12 +168,22 @@ document.addEventListener("DOMContentLoaded", () => {
         const subHeader = { text: "" };
         h1Heading.subHeaders.push(subHeader);
         const subHeaderIndex = h1Heading.subHeaders.length;
-        addInput(`Enter subheading ${currentHeadingIndex + 1}.${subHeaderIndex}`, (e) => subHeader.text = e.target.value);
+        
+        // Add subheader input
+        addInput(`Enter subheading ${currentHeadingIndex + 1}.${subHeaderIndex}`, (e) => subHeader.text = e.target.value, true);
     };
 
-    // Send table headers directly to the server
+    // Validate and send headers and subheaders to the server
     const saveHeadingsToDatabase = async () => {
-        const payload = headings.map(({ h1, subHeaders }) => ({
+        // Filter out headings with empty main headers
+        const filteredHeadings = headings.filter(({ h1 }) => h1.trim() !== "");
+
+        if (filteredHeadings.length === 0) {
+            alert("Please enter at least one header.");
+            return;
+        }
+
+        const payload = filteredHeadings.map(({ h1, subHeaders }) => ({
             header: h1,
             subheaders: subHeaders.map(sub => ({ text: sub.text }))
         }));
@@ -189,15 +205,17 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error("Error saving headers and subheaders to database:", error);
         }
+
+        // Optionally clear the modal and close it
+        headings = [];
+        elements["columnModal"].style.display = "none";
     };
 
     // Event listeners
     elements["addColumnBtn"]?.addEventListener("click", showModal);
     elements["addAnotherHeaderBtn"]?.addEventListener("click", addHeaderInput);
     elements["addSubHeaderBtn"]?.addEventListener("click", addSubHeaderInput);
-
     elements["saveColumnBtn"]?.addEventListener("click", async () => {
         await saveHeadingsToDatabase();  // Save directly to the database
-        elements["columnModal"].style.display = "none";
     });
 });

@@ -1,0 +1,80 @@
+.heading h2 {
+    color: var(--main-highlight);
+}
+
+div.columnModal {
+    display: flex;
+    position: absolute;
+    width: 65%;
+    max-width: 650px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--prim80);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.modal-content .heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+    gap: clamp(5px, 3vw, 25px);
+}
+
+.modal-buttons button {
+    padding: 10px 25px;
+    border: 1px solid var(--main-highlight);
+    color: var(--main-highlight);
+    background-color: var(--bg10);
+    border-radius: 3px;
+}
+.modal-buttons button:hover {
+    background-color: var(--main-highlight);
+    color:var(--main-bg);
+}
+
+
+.closeBtn button {
+    padding: 6px 9px;
+    border-radius: 3px;
+    border: 1px solid var(--main-highlight);
+    background-color: var(--prim80);
+    color: var(--main-highlight);
+}
+
+button#saveColumnBtn {
+    background-color: var(--main-highlight);
+    color: var(--main-bg);
+    font-weight: 700;
+}
+
+.headerInputs input {
+    max-width: 200px; 
+    padding-block: 5px;
+}
+
+.headerInputs {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    max-height: 360px;
+}
+
+/* header inputs */
+input.header-input {
+    padding-inline: 8px;
+}
+
+/* sub header inputs */
+input.header-input.subheader-input {
+    margin-left: 30px;
+    padding-inline: 8px;
+}
