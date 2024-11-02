@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dorothy's Database</title>
+    <link rel="stylesheet" href="./public/css/styles.css">
+</head>
+<body>
+    <h1>Dorothy's Database</h1>
+
+    <nav>
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./public/pages/data-management.html">Data Management</a></li>
+            <li><a href="./public/pages/column-management.html">Column Management</a></li>
+        </ul>
+    </nav>
+
+    <div id="home" class="section active">
+        <h2>Home</h2>
+        <div class="search-bar">
+            <input type="text" placeholder="Search..." id="home-search">
+        </div>
+
+        <table id="headersTable">
+            <thead id="headersRow"></thead>
+            <tbody id="subheadersRow"></tbody>
+        </table>
+    </div>
+    
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="./public/js/home.js"></script>
+</body>
+</html>

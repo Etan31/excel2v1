@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Management - Dorothy's Database</title>
+    <link rel="stylesheet" href="./../css/styles.css">
+</head>
+<body>
+    <h1>Data Management</h1>
+
+    <nav>
+        <ul>
+            <li><a href="../../index.html">Home</a></li>
+            <li><a href="./data-management.html">Data Management</a></li>
+            <li><a href="./column-management.html">Column Management</a></li>
+        </ul>
+    </nav>
+
+    <div class="search-bar">
+        <input type="text" placeholder="Search..." id="data-management-search">
+    </div>
+    <div class="tableConfig">
+        <button id="insertButton">Insert</button>
+        <button>Update</button>
+        <button>Delete</button>
+    </div>
+    <table id="data-management-table">
+        <thead id="headersRow"></thead>
+        <tbody id="subheadersRow"></tbody>
+    </table>
+
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <!-- <script src="./js/dataManagement.js"></script> -->
+    <script src="./../js/headerFetcher.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchHeaders('headersRow', 'subheadersRow'); // For Data Management Table
+            fetchHeaders('columnHeadersRow', 'columnSubheadersRow'); // For Column Management Table
+        });
+    </script>
+</body>
+</html>

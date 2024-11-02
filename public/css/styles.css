@@ -1,0 +1,91 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+nav {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.section {
+    padding: 20px;
+    display: none; /* Hide all sections initially */
+}
+
+.section.active {
+    display: block; /* Show active section */
+}
+
+.tableConfig {
+    margin-bottom: 20px;
+}
+
+.tableConfig button {
+    margin-right: 10px;
+}
+
+.table-container {
+    width: calc(100% - 40px); /* Full width minus margin */
+    margin: 0 auto; /* Center the table container */
+    overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Remove gaps between cells */
+    font-size: 14px; /* Adjust font size for better readability */
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 4px; /* Reduce padding for a more compact look */
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Style for smaller screens */
+@media (max-width: 600px) {
+    table, th, td {
+        font-size: 12px; /* Reduce font size on smaller screens */
+    }
+    th, td {
+        padding: 2px; /* Further reduce padding on smaller screens */
+    }
+}
+
+.search-bar {
+    margin-bottom: 10px;
+}
+
+div#headerInputs {
+    display: flex;
+    flex-direction: column;
+}
