@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dorothy's Database</title>
     <link rel="stylesheet" href="./../css/styles.css">
-    <link rel="stylesheet" href="./../css/home.css">
+    <!-- <link rel="stylesheet" href="./../css/home.css"> -->
     <link rel="stylesheet" href="./../css/dataMgmt.css">
+    <link rel="stylesheet" href="./../css/columnMgmt.css">
+
 </head>
 <body>
     <nav>
@@ -25,6 +27,28 @@
         <button>Update</button>
         <button>Delete</button>
     </div>
+
+    <!-- Modal Popup for adding column headers and sub-headers -->
+    <div id="dataModal" class="modal dataModal" style="display: none;">
+        <div class="modal-content">
+            <div class="heading">
+                <h2>Insert Data</h2>
+                <div class="closeBtn"><button>X</button></div>
+            </div>
+            <div id="headerInputs" class="headerInputs">
+                <label>Header:  
+                    <input type="text" placeholder="Enter header name" class="header-input" data-heading="h1-1">
+                </label>
+            </div>
+            <div class="modal-buttons">
+                <button id="addRowBtn">Add Row</button>
+                <button id="addImageBtn">Add Image</button>
+                <button id="saveColumnBtn">Save</button>
+            </div>
+        </div>
+    </div>
+
+
     <div class="tableContainer">
         <table id="data-management-table">
             <thead id="headersRow"></thead>
@@ -33,13 +57,7 @@
     </div>
 
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
-    <!-- <script src="./js/dataManagement.js"></script> -->
+    <script src="./../js/dataManagement.js"></script>
     <script src="./../js/headerFetcher.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchHeaders('headersRow', 'subheadersRow'); // For Data Management Table
-            fetchHeaders('columnHeadersRow', 'columnSubheadersRow'); // For Column Management Table
-        });
-    </script>
 </body>
 </html>
