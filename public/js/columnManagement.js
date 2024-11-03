@@ -53,13 +53,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Validate and send headers and subheaders to the server
     const saveHeadingsToDatabase = async () => {
-        // Filter out headings with empty main headers
-        const filteredHeadings = headings.filter(({ h1 }) => h1.trim() !== "");
+        let hasEmptyField = false;
 
-        if (filteredHeadings.length === 0) {
-            alert("Please enter at least one header.");
-            return;
-        }
+        headings.forEach((heading, index) => {
+            // Check if the main header (h1) is empty
+            if (heading.h1.trim() === "") {
+                alert(`Header ${index + 1} cannot be blank. Please enter a value.`);
+                hasEmptyField = true;
+                return;
+            }
+
+            // Check if any subheader is empty
+            heading.subHeaders.forEach((subHeader, subIndex) => {
+                if (subHeader.text.trim() === "") {
+                    alert(`Subheading ${index + 1}.${subIndex + 1} cannot be blank. Please enter a value.`);
+                    hasEmptyField = true;
+                    return;
+                }
+            });
+        });
+
+        // If any field is empty, stop the save operation
+        if (hasEmptyField) return;
+
+        // Filter out headings with empty main headers (just in case)
+        const filteredHeadings = headings.filter(({ h1 }) => h1.trim() !== "");
 
         const payload = filteredHeadings.map(({ h1, subHeaders }) => ({
             header: h1,
@@ -84,10 +102,11 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error saving headers and subheaders to database:", error);
         }
 
-        // Optionally clear the modal and close it
+        // Clear modal and close it
         headings = [];
         elements["columnModal"].style.display = "none";
     };
+
 
     // Event listeners
     elements["addColumnBtn"]?.addEventListener("click", showModal);

@@ -43,6 +43,7 @@ app.post('/columns/headers', async (req, res) => {
   }
 });
 
+// This will display the table headers
 app.get('/home/display', async (req, res) => {
   try {
       // Fetch headers and their subheaders
