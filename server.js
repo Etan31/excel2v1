@@ -48,9 +48,9 @@ app.get('/home/display', async (req, res) => {
   try {
       // Fetch headers and their subheaders
       const query = `
-          SELECT id, header, subheader
+          SELECT headers_id, header, subheader
           FROM headers
-          ORDER BY id
+          ORDER BY headers_id
       `;
       const result = await pool.query(query);
       const rows = result.rows;
@@ -73,6 +73,25 @@ app.get('/home/display', async (req, res) => {
       res.status(500).send('Error fetching headers and subheaders');
   }
 });
+
+
+// inserting data to table
+app.post('/data/insert', async (req, res) => {
+    const { headers_id, row_num, details } = req.body;
+    try {
+        const query = `INSERT INTO info (headers_id, row_num, details) VALUES ($1, $2, $3) RETURNING *`;
+        const values = [headers_id, row_num, details];
+
+        const result = await pool.query(query, values);
+        console.log(result.rows);
+
+        res.status(201).json({ message: 'Data inserted successfully', data: result.rows[0] });
+    } catch (error) {
+        console.error('Error inserting information to the table:', error);
+        res.status(500).send('Error inserting information to the table');
+    }
+});
+
 
 
 

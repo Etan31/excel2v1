@@ -116,3 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
         await saveHeadingsToDatabase();  // Save directly to the database
     });
 });
+
+function closeModal() {
+    document.getElementById("columnModal").style.display = "none";
+}

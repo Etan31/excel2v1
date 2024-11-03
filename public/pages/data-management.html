@@ -23,7 +23,7 @@
         <input type="text" class="home-search" placeholder="Search..." id="data-management-search">
     </div>
     <div class="tableConfig">
-        <button id="insertButton">Insert</button>
+        <button id="insertButton" onclick="openModal()">Insert</button>
         <button>Update</button>
         <button>Delete</button>
     </div>
@@ -33,7 +33,7 @@
         <div class="modal-content">
             <div class="heading">
                 <h2>Insert Data</h2>
-                <div class="closeBtn"><button>X</button></div>
+                <div class="closeBtn"><button onclick="closeModal()">X</button></div>
             </div>
             <div id="headerInputs" class="headerInputs">
                 <label>Header:  

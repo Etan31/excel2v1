@@ -78,3 +78,9 @@ input.header-input.subheader-input {
     margin-left: 30px;
     padding-inline: 8px;
 }
+
+
+.closeBtn button:hover {
+    background-color: var(--main-red);
+    cursor: pointer;
+} 
