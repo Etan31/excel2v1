@@ -66,19 +66,18 @@ document.addEventListener("DOMContentLoaded", () => {
     
         // Validation logic
         headings.forEach((heading, index) => {
-            // Check if the main header (h1) is empty
             if (heading.h1.trim() === "") {
                 alert(`Header ${index + 1} cannot be blank. Please enter a value.`);
                 hasEmptyField = true;
-                return; // Stop checking further if an empty header is found
+                return;
             }
     
             // Check if any subheader is empty
-            heading.subHeaders.forEach((subHeader, subIndex) => {
+            (heading.subHeaders || []).forEach((subHeader, subIndex) => {
                 if (subHeader.text.trim() === "") {
                     alert(`Subheading ${index + 1}.${subIndex + 1} cannot be blank. Please enter a value.`);
                     hasEmptyField = true;
-                    return; // Stop checking further if an empty subheader is found
+                    return;
                 }
             });
         });
@@ -87,10 +86,28 @@ document.addEventListener("DOMContentLoaded", () => {
         if (hasEmptyField) return;
     
         // Payload creation
-        const filteredHeadings = headings.filter(({ h1 }) => h1.trim() !== ""); // Filter out empty headers
-        const payload = filteredHeadings.map(({ h1, subHeaders }) => ({
-            header: h1,
-            subheaders: subHeaders.map(sub => ({ text: sub.text })) // Map subheaders to the required format
+        const filteredHeadings = headings
+            .filter(({ h1 }) => h1.trim() !== "")
+            .map(({ h1, subHeaders = [] }) => {  // Provide default value for subHeaders
+                const validSubheaders = subHeaders.filter(sub => sub.text.trim() !== "");
+    
+                // If there are no valid subheaders, add a new subheader with the same text as the header
+                if (validSubheaders.length === 0) {
+                    return {
+                        header: h1,
+                        subheaders: [{ text: h1 }]
+                    };
+                }
+    
+                return {
+                    header: h1,
+                    subheaders: validSubheaders
+                };
+            });
+    
+        const payload = filteredHeadings.map(({ header, subheaders }) => ({
+            header,
+            subheaders: (subheaders || []).map(sub => ({ text: sub.text })) // Safely map subheaders
         }));
     
         try {
@@ -99,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(payload) // Send the payload to the server
+                body: JSON.stringify(payload)
             });
     
             if (response.ok) {
@@ -116,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headings = [];
         elements["columnModal"].style.display = "none"; // Hide the modal
     };
+    
     
 
     // Event listeners
