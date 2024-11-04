@@ -134,6 +134,19 @@ td {
     padding-top: 4px;
 }
 
+::selection {
+    background-color: var(--main-bg); 
+    color: var(--main-highlight); 
+}
+
+/* For webkit browsers (Chrome, Safari) */
+::-moz-selection {
+    background-color: #4CAF50; 
+    color: white; 
+}
+
+
+
 
 .search-bar {
     margin-bottom: 10px;
@@ -143,6 +156,37 @@ td {
 div#headerInputs {
     display: flex;
     flex-direction: column;
+}
+
+
+
+
+.modal.dataModal,
+div#columnModal{
+    display: flex; /* Use flex to center content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    position: fixed; /* Fixes the modal to the viewport */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Transparent black background */
+    z-index: 9999; /* High z-index to be on top */
+}
+
+.modal-content {
+    background: var(--main-prim); /* Background color for modal content */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding inside modal */
+    max-width: 500px; /* Max width of modal */
+    width: 100%; /* Responsive width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for depth */
+}
+
+/* To ensure the modal is hidden by default */
+.modal {
+    display: none; /* Keep hidden when not needed */
 }
 
 

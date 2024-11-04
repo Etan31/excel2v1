@@ -14,7 +14,7 @@ async function fetchHeaders() {
             // Create the main header cell with colspan
             const headerCell = document.createElement('th');
             headerCell.textContent = header;
-            headerCell.colSpan = subheaders.length || 1; // Default to 1 if no subheaders
+            headerCell.colSpan = subheaders.length || 1; 
             headersRow.appendChild(headerCell);
 
             // Create each subheader cell

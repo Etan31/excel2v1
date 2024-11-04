@@ -2,7 +2,7 @@
     color: var(--main-highlight);
 }
 
-div.columnModal {
+/* div.columnModal {
     display: flex;
     position: absolute;
     width: 65%;
@@ -13,7 +13,7 @@ div.columnModal {
     background-color: var(--prim80);
     padding: 20px;
     border-radius: 5px;
-}
+} */
 
 .modal-content .heading {
     display: flex;
@@ -57,8 +57,15 @@ button#saveColumnBtn {
 }
 
 .headerInputs input {
-    max-width: 200px; 
-    padding-block: 5px;
+    max-width: 200px;
+    padding: 5px 8px;
+    background-color: var(--highlight80);
+    border: 1px solid var(--prim80);
+    transition: border 0.2s ease;
+}
+
+.headerInputs input:focus{
+    border: 1px solid var(--main-prim);
 }
 
 .headerInputs {
@@ -68,10 +75,6 @@ button#saveColumnBtn {
     max-height: 360px;
 }
 
-/* header inputs */
-input.header-input {
-    padding-inline: 8px;
-}
 
 /* sub header inputs */
 input.header-input.subheader-input {

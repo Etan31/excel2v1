@@ -33,13 +33,19 @@
         <div class="modal-content">
             <div class="heading">
                 <h2>Insert Data</h2>
+                <div class="insert-filter">
+                    <label for="filterDropdown">Filter by:</label>
+                    <select id="filterDropdown" class="filter-dropdown">
+                        <option value="all">All</option>
+                        <option value="headers">Headers</option>
+                        <option value="subheaders">Sub Headers</option>
+                    </select>
+                </div>
                 <div class="closeBtn"><button onclick="closeModal()">X</button></div>
             </div>
             <div id="headerInputs" class="headerInputs">
-                <label>Header:  
-                    <input type="text" placeholder="Enter header name" class="header-input" data-heading="h1-1">
-                </label>
-            </div>
+                <!-- Dynamic inputs will go here -->
+            </div> 
             <div class="modal-buttons">
                 <button id="addRowBtn">Add Row</button>
                 <button id="addImageBtn">Add Image</button>
@@ -47,6 +53,8 @@
             </div>
         </div>
     </div>
+    
+    
 
 
     <div class="tableContainer">

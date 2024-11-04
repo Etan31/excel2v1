@@ -6,8 +6,6 @@ function closeModal() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    updateTableDisplay(); // Fetch and display table data on page load
-
     const elements = ["addColumnBtn", "columnModal", "saveColumnBtn", "addAnotherHeaderBtn", "addSubHeaderBtn", "headerInputs"]
         .reduce((acc, id) => {
             const el = document.getElementById(id);
@@ -20,10 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show modal and initialize fields
     const showModal = () => {
-        elements["columnModal"].style.display = "block";
+        elements["columnModal"].style.display = "flex";
         elements["headerInputs"].innerHTML = '';
-        currentHeadingIndex = 0;
-        addHeaderInput();
+        headings = []; // Reset headings
+        currentHeadingIndex = 0; // Reset index
+        addHeaderInput(); // Add first header input
     };
 
     // Add header or subheader input field
@@ -42,45 +41,57 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const addHeaderInput = () => {
-        currentHeadingIndex = headings.length;
         const h1Header = { h1: "", subHeaders: [] };
         headings.push(h1Header);
         
         // Add header input
-        addInput(`Enter header ${currentHeadingIndex + 1}`, (e) => h1Header.h1 = e.target.value);
+        addInput(`Enter header ${headings.length}`, (e) => h1Header.h1 = e.target.value);
+        currentHeadingIndex = headings.length - 1; // Set the current index to the new header
     };
 
     const addSubHeaderInput = () => {
+        if (currentHeadingIndex >= headings.length) return; // Check if valid index
+
         const h1Heading = headings[currentHeadingIndex];
         const subHeader = { text: "" };
         h1Heading.subHeaders.push(subHeader);
-        const subHeaderIndex = h1Heading.subHeaders.length;
         
         // Add subheader input
-        addInput(`Enter subheading ${currentHeadingIndex + 1}.${subHeaderIndex}`, (e) => subHeader.text = e.target.value, true);
+        addInput(`Enter subheading ${currentHeadingIndex + 1}.${h1Heading.subHeaders.length}`, (e) => subHeader.text = e.target.value, true);
     };
 
     // Validate and send headers and subheaders to the server
     const saveHeadingsToDatabase = async () => {
-        const filteredHeadings = headings
-            .filter(({ h1 }) => h1.trim() !== "") 
-            .map(({ h1, subHeaders }) => {
-                // Create an array of subheaders that are valid
-                const validSubheaders = subHeaders.filter(sub => sub.text.trim() !== "");
+        let hasEmptyField = false;
     
-                // If there are no valid subheaders, add a new subheader with the same text as the header
-                if (validSubheaders.length === 0) {
-                    return {
-                        header: h1,
-                        subheaders: [{ text: h1 }] // Create a subheader with the same text as the header
-                    };
+        // Validation logic
+        headings.forEach((heading, index) => {
+            // Check if the main header (h1) is empty
+            if (heading.h1.trim() === "") {
+                alert(`Header ${index + 1} cannot be blank. Please enter a value.`);
+                hasEmptyField = true;
+                return; // Stop checking further if an empty header is found
+            }
+    
+            // Check if any subheader is empty
+            heading.subHeaders.forEach((subHeader, subIndex) => {
+                if (subHeader.text.trim() === "") {
+                    alert(`Subheading ${index + 1}.${subIndex + 1} cannot be blank. Please enter a value.`);
+                    hasEmptyField = true;
+                    return; // Stop checking further if an empty subheader is found
                 }
-    
-                return {
-                    header: h1,
-                    subheaders: validSubheaders 
-                };
             });
+        });
+    
+        // If any field is empty, stop the save operation
+        if (hasEmptyField) return;
+    
+        // Payload creation
+        const filteredHeadings = headings.filter(({ h1 }) => h1.trim() !== ""); // Filter out empty headers
+        const payload = filteredHeadings.map(({ h1, subHeaders }) => ({
+            header: h1,
+            subheaders: subHeaders.map(sub => ({ text: sub.text })) // Map subheaders to the required format
+        }));
     
         try {
             const response = await fetch('http://localhost:3000/columns/headers', {
@@ -88,33 +99,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(filteredHeadings) // Use the filtered headings
+                body: JSON.stringify(payload) // Send the payload to the server
             });
     
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            if (response.ok) {
+                console.log("Headers and subheaders saved to database.");
+                await updateTableDisplay(); // Refresh table display
+            } else {
+                console.error("Failed to save headers and subheaders to database.");
             }
-
-            await updateTableDisplay(); 
         } catch (error) {
-            console.error('Error saving headings:', error);
+            console.error("Error saving headers and subheaders to database:", error);
         }
-
+    
+        // Clear headings and close the modal
         headings = [];
-        elements["columnModal"].style.display = "none";
+        elements["columnModal"].style.display = "none"; // Hide the modal
     };
     
-    
-    
-    
-
 
     // Event listeners
     elements["addColumnBtn"]?.addEventListener("click", showModal);
     elements["addAnotherHeaderBtn"]?.addEventListener("click", addHeaderInput);
     elements["addSubHeaderBtn"]?.addEventListener("click", addSubHeaderInput);
     elements["saveColumnBtn"]?.addEventListener("click", async () => {
-        await saveHeadingsToDatabase();  // Save directly to the database
+        await saveHeadingsToDatabase();
     });
 });
 

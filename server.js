@@ -38,6 +38,8 @@ app.get('/columns', async (req, res) => {
 
             if (subheader) {
                 headersMap.get(header).push({ text: subheader });
+            } else {
+                headersMap.get(header).push({ text: header });
             }
         });
 
@@ -125,22 +127,47 @@ app.get('/home/display', async (req, res) => {
 });
 
 
+
 // inserting data to table
 app.post('/data/insert', async (req, res) => {
-    const { headers_id, row_num, details } = req.body;
+    const { data } = req.body; // Expecting an array of objects
+
     try {
-        const query = `INSERT INTO info (headers_id, row_num, details) VALUES ($1, $2, $3) RETURNING *`;
-        const values = [headers_id, row_num, details];
+        const results = [];
 
-        const result = await pool.query(query, values);
-        console.log(result.rows);
+        // Loop through each data entry
+        for (const entry of data) {
+            const { headers_id, details } = entry; // Destructure headers_id and details
 
-        res.status(201).json({ message: 'Data inserted successfully', data: result.rows[0] });
+            // Step 1: Count existing rows
+            const countQuery = `SELECT COUNT(*) AS total_rows_id FROM info WHERE headers_id = $1`;
+            const countResult = await pool.query(countQuery, [headers_id]);
+            const totalRowsId = countResult.rows[0].total_rows_id;
+
+            // Step 2: Get the maximum row_num
+            const maxQuery = `SELECT MAX(row_num) AS max_row_num FROM info WHERE headers_id = $1`;
+            const maxResult = await pool.query(maxQuery, [headers_id]);
+            const maxRowNum = maxResult.rows[0].max_row_num || 0;
+
+            // Step 3: Prepare to insert new rows
+            const insertQueries = details.map((detail, index) => {
+                const row_num = totalRowsId > 0 ? maxRowNum + index + 1 : index + 1; 
+                const insertQuery = `INSERT INTO info (headers_id, row_num, details) VALUES ($1, $2, $3) RETURNING *`;
+                return pool.query(insertQuery, [headers_id, row_num, detail]);
+            });
+
+            // Execute all insert queries for the current headers_id
+            const result = await Promise.all(insertQueries);
+            results.push(...result.map(res => res.rows[0])); // Collect results
+        }
+
+        res.status(201).json({ message: 'Data inserted successfully', data: results });
     } catch (error) {
         console.error('Error inserting information to the table:', error);
         res.status(500).send('Error inserting information to the table');
     }
 });
+
 
 
 

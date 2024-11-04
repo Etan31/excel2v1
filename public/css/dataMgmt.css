@@ -1,4 +1,4 @@
-div.dataModal {
+/* div.dataModal {
     display: flex;
     position: absolute;
     width: 65%;
@@ -9,9 +9,38 @@ div.dataModal {
     background-color: var(--prim80);
     padding: 20px;
     border-radius: 5px;
-}
+} */
 
 
 .search-bar.dataMgmtInput {
     padding-top: 20px;
 }
+
+div#headerInputs > .subheader-container {
+    margin-left: 31px;
+    font-size: 11px;
+    margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+div#headerInputs > label {
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+#dataModal .headerInputs input {
+    font-size: 12px;
+    padding-inline: 5px;
+    padding-block: unset;
+    border: 1px solid var(--prim80); 
+    transition: border 0.2s ease;
+}
+
+#dataModal .headerInputs input:focus {
+    border: 1px solid var(--main-bg);
+    outline: none;
+}
+/* ======================================/ */
