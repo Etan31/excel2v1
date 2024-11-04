@@ -30,23 +30,26 @@ app.get('/columns', async (req, res) => {
         // Structure the data
         const headersMap = new Map();
         result.rows.forEach(row => {
-            const { header, subheader } = row;
+            const { headers_id, header, subheader } = row; // Include headers_id
 
+            // Check if the header already exists in the map
             if (!headersMap.has(header)) {
-                headersMap.set(header, []);
+                headersMap.set(header, { headers_id, subheaders: [] }); // Store headers_id with the header
             }
 
+            // Push the subheader into the subheaders array
             if (subheader) {
-                headersMap.get(header).push({ text: subheader });
+                headersMap.get(header).subheaders.push({ text: subheader });
             } else {
-                headersMap.get(header).push({ text: header });
+                headersMap.get(header).subheaders.push({ text: header });
             }
         });
 
         // Convert the map to an array of objects
-        const data = Array.from(headersMap, ([header, subheaders]) => ({
-            header,
-            subheaders
+        const data = Array.from(headersMap, ([header, { headers_id, subheaders }]) => ({
+            header,        // Include header text
+            headers_id,    // Include headers_id
+            subheaders     // Include subheaders
         }));
 
         res.json(data);
@@ -54,7 +57,8 @@ app.get('/columns', async (req, res) => {
         console.error('Error fetching headers and subheaders:', error);
         res.status(500).send('Error fetching headers and subheaders');
     }
-});  
+});
+
 
 
 // To Insert/Create column(s) to the current table, or this will create one if no table available.
