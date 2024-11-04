@@ -1,4 +1,13 @@
+
+function closeModal() {
+    document.getElementById("columnModal").style.display = "none";
+}
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
+    updateTableDisplay(); // Fetch and display table data on page load
+
     const elements = ["addColumnBtn", "columnModal", "saveColumnBtn", "addAnotherHeaderBtn", "addSubHeaderBtn", "headerInputs"]
         .reduce((acc, id) => {
             const el = document.getElementById(id);
@@ -53,59 +62,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Validate and send headers and subheaders to the server
     const saveHeadingsToDatabase = async () => {
-        let hasEmptyField = false;
-
-        headings.forEach((heading, index) => {
-            // Check if the main header (h1) is empty
-            if (heading.h1.trim() === "") {
-                alert(`Header ${index + 1} cannot be blank. Please enter a value.`);
-                hasEmptyField = true;
-                return;
-            }
-
-            // Check if any subheader is empty
-            heading.subHeaders.forEach((subHeader, subIndex) => {
-                if (subHeader.text.trim() === "") {
-                    alert(`Subheading ${index + 1}.${subIndex + 1} cannot be blank. Please enter a value.`);
-                    hasEmptyField = true;
-                    return;
+        const filteredHeadings = headings
+            .filter(({ h1 }) => h1.trim() !== "") 
+            .map(({ h1, subHeaders }) => {
+                // Create an array of subheaders that are valid
+                const validSubheaders = subHeaders.filter(sub => sub.text.trim() !== "");
+    
+                // If there are no valid subheaders, add a new subheader with the same text as the header
+                if (validSubheaders.length === 0) {
+                    return {
+                        header: h1,
+                        subheaders: [{ text: h1 }] // Create a subheader with the same text as the header
+                    };
                 }
+    
+                return {
+                    header: h1,
+                    subheaders: validSubheaders 
+                };
             });
-        });
-
-        // If any field is empty, stop the save operation
-        if (hasEmptyField) return;
-
-        // Filter out headings with empty main headers (just in case)
-        const filteredHeadings = headings.filter(({ h1 }) => h1.trim() !== "");
-
-        const payload = filteredHeadings.map(({ h1, subHeaders }) => ({
-            header: h1,
-            subheaders: subHeaders.map(sub => ({ text: sub.text }))
-        }));
-
+    
         try {
             const response = await fetch('http://localhost:3000/columns/headers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(filteredHeadings) // Use the filtered headings
             });
-
-            if (response.ok) {
-                console.log("Headers and subheaders saved to database.");
-            } else {
-                console.error("Failed to save headers and subheaders to database.");
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+
+            await updateTableDisplay(); 
         } catch (error) {
-            console.error("Error saving headers and subheaders to database:", error);
+            console.error('Error saving headings:', error);
         }
 
-        // Clear modal and close it
         headings = [];
         elements["columnModal"].style.display = "none";
     };
+    
+    
+    
+    
 
 
     // Event listeners
@@ -117,6 +118,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-function closeModal() {
-    document.getElementById("columnModal").style.display = "none";
-}
+// To get the table data for updating the display of the table, 
+// To be able to update the table without refreshing the page. 
+const updateTableDisplay = async () => {
+    try {
+        const response = await fetch('http://localhost:3000/columns');
+        const data = await response.json();
+
+        const headersRow = document.getElementById("columnHeadersRow");
+        const subheadersRow = document.getElementById("columnSubheadersRow");
+
+        headersRow.innerHTML = ''; 
+        subheadersRow.innerHTML = '';
+
+        data.forEach((column) => {
+            // Create header cell for each heading
+            const headerCell = document.createElement("th");
+            headerCell.innerText = column.header;
+            headerCell.colSpan = column.subheaders.length || 1; 
+            headersRow.appendChild(headerCell);
+
+            // Create a separate cell for each subheader under the header
+            if (column.subheaders.length > 0) {
+                column.subheaders.forEach((sub) => {
+                    const subheaderCell = document.createElement("td");
+                    subheaderCell.innerText = sub.text;
+                    subheadersRow.appendChild(subheaderCell);
+                });
+            } else {
+                // If no subheaders, add a cell displaying the header as a subheader
+                const subheaderCell = document.createElement("td");
+                subheaderCell.innerText = column.header;
+                subheadersRow.appendChild(subheaderCell);
+            }
+        });
+    } catch (error) {
+        console.error("Error updating table display:", error);
+    }
+};
+
+
