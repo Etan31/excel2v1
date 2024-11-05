@@ -34,13 +34,27 @@
             <div class="heading">
                 <h2>Insert Data</h2>
                 <div class="insert-filter">
-                    <label for="filterDropdown">Filter by:</label>
-                    <select id="filterDropdown" class="filter-dropdown">
-                        <option value="all">All</option>
-                        <option value="headers">Headers</option>
-                        <option value="subheaders">Sub Headers</option>
-                    </select>
+                    <label>Filter by:</label>
+                    <div class="filter-checkboxes" id="filterOptionsContainer">
+                        <label>
+                            <input type="checkbox" id="allCheckbox" name="filterOptions" value="all" checked>
+                            All
+                        </label>
+                        <label>
+                            <input type="checkbox" class="filter-option" name="filterOptions" value="headers">
+                            Headers
+                        </label>
+                        <label>
+                            <input type="checkbox" class="filter-option" name="filterOptions" value="headers">
+                            Headers
+                        </label>
+                        <label>
+                            <input type="checkbox" class="filter-option" name="filterOptions" value="headers">
+                            Headers
+                        </label>
+                    </div>
                 </div>
+                
                 <div class="closeBtn"><button onclick="closeModal()">X</button></div>
             </div>
             <div id="headerInputs" class="headerInputs">
@@ -67,5 +81,22 @@
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script src="./../js/dataManagement.js"></script>
     <script src="./../js/headerFetcher.js"></script>
+
+    <Script>
+        const allCheckbox = document.getElementById('allCheckbox');
+        const filterOptions = document.querySelectorAll('.filter-option');
+
+        // Toggle checkboxes based on selection
+        allCheckbox.addEventListener('change', () => {
+            if (allCheckbox.checked) filterOptions.forEach(checkbox => checkbox.checked = false);
+        });
+
+        filterOptions.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                allCheckbox.checked = ![...filterOptions].some(option => option.checked);
+            });
+        });
+
+    </Script>
 </body>
 </html>

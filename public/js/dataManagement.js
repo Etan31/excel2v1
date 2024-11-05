@@ -11,6 +11,28 @@ function openModal() {
 function closeModal() {
     document.getElementById("dataModal").style.display = "none";
 }
+
+
+
+// Toggle checkboxes based on selection
+const allCheckbox = document.getElementById('allCheckbox');
+const filterOptions = document.querySelectorAll('.filter-option');
+
+// this will uncheck the selected filter headins.
+allCheckbox.addEventListener('change', () => {
+    if (allCheckbox.checked) filterOptions.forEach(checkbox => checkbox.checked = false);
+});
+
+// filter the displayed inputs to insert, and will uncheck the 'all' checkbox.
+filterOptions.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+        allCheckbox.checked = ![...filterOptions].some(option => option.checked);
+    });
+});
+
+
+
+// Displaying all columns from the table and create input for each.
 async function displayHeaderInputs(headerInputsContainerId) {
     try {
         // Fetch headers and subheaders data from the server
@@ -33,9 +55,9 @@ async function displayHeaderInputs(headerInputsContainerId) {
         data.forEach((headerData, index) => {
             console.log(`Header data at index ${index}:`, headerData); // Log header data
 
-            // Create header label to display header text only
+            // // Create header label to display header text only
             const headerLabel = document.createElement("label");
-            headerLabel.innerText = `Header ${index + 1}: ${headerData.header}`;
+            headerLabel.innerText = `${headerData.header}`;
             headerInputsContainer.appendChild(headerLabel);
 
             // Create a div to hold subheader inputs
@@ -134,3 +156,42 @@ document.getElementById("saveColumnBtn").addEventListener("click", async () => {
     await saveHeaderInputs();
     closeModal();  // Close modal after saving
 });
+
+
+
+// async function loadFilterOptions() {
+//     try {
+//         // Fetch headers data from the server
+//         const response = await fetch('http://localhost:3000/columns');
+//         const data = await response.json();
+
+//         // Get the filter options container
+//         const filterOptionsContainer = document.getElementById("filterOptionsContainer");
+
+//         // Loop through the data and create checkboxes for each header
+//         data.forEach(headerData => {
+//             // Create a label for each header option
+//             const label = document.createElement("label");
+
+//             // Create a checkbox input for the header
+//             const checkbox = document.createElement("input");
+//             checkbox.type = "checkbox";
+//             checkbox.classList.add("filter-option");
+//             checkbox.name = "filterOptions";
+//             checkbox.value = headerData.headers_id; // Use headers_id as the value
+//             checkbox.id = `header_${headerData.headers_id}`; // Unique ID
+
+//             // Set the label text to the header name
+//             label.appendChild(checkbox);
+//             label.appendChild(document.createTextNode(headerData.header));
+
+//             // Append the label to the filter options container
+//             filterOptionsContainer.appendChild(label);
+//         });
+//     } catch (error) {
+//         console.error("Error loading filter options:", error);
+//     }
+// }
+
+// Call the function to load filter options when the page loads
+// document.addEventListener("DOMContentLoaded", loadFilterOptions);

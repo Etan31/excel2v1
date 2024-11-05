@@ -23,12 +23,22 @@ div#headerInputs > .subheader-container {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    color: var(--highlight80);
+}
+
+.insert-filter {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+    max-height: 70px;
+    overflow-y: auto;
 }
 
 div#headerInputs > label {
     font-weight: bold;
-    font-size: 13px;
+    font-size: clamp(15px, 5vw, 18px);
     margin-top: 10px;
+    color: var(--main-highlight);
 }
 
 #dataModal .headerInputs input {
@@ -43,4 +53,7 @@ div#headerInputs > label {
     border: 1px solid var(--main-bg);
     outline: none;
 }
+
+
+
 /* ======================================/ */
