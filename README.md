@@ -18,7 +18,7 @@ This project is for saving text, images, and other infos. A table manager simila
    npx http-server ./client 
     ```
 
-###2. Start the Server Side
+### 2. Start the Server Side
 1. Navigate to the server directory in your terminal:
 ```bash
 cd server
